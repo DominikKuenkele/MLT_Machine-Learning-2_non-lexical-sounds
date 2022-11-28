@@ -1,1 +1,10 @@
 .vscode/
+.vector_cache/
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.out
+*.log
+*.synctex.gz
+_minted-report/

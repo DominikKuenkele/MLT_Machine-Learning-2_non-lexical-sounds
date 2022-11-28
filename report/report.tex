@@ -1,0 +1,115 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fphw Assignment
+% LaTeX Template
+% Version 1.0 (27/04/2019)
+%
+% This template originates from:
+% https://www.LaTeXTemplates.com
+%
+% Authors:
+% Class by Felipe Portales-Oliva (f.portales.oliva@gmail.com) with template 
+% content and modifications by Vel (vel@LaTeXTemplates.com)
+%
+% Template (this file) License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[
+	11pt, % Default font size, values between 10pt-12pt are allowed
+]{fphw}
+
+% Template-specific packages
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\usepackage{mathpazo} % Use the Palatino font
+
+\usepackage{graphicx} % Required for including images
+
+\usepackage{booktabs} % Required for better horizontal rules in tables
+
+\usepackage{listings} % Required for insertion of code
+
+\usepackage{enumerate} % To modify the enumerate environment
+
+\usepackage{color}
+\usepackage{todonotes}
+\usepackage{scrextend}
+\usepackage{caption}
+\usepackage{nameref}
+\usepackage{hyperref}
+\usepackage{minted}
+\usepackage{framed}
+\usepackage{multirow}
+\usepackage{pifont}
+\usepackage{float}
+
+\restylefloat{table}
+
+\definecolor{color_background}{rgb}{0.98,0.98,0.98}
+\definecolor{shadecolor}{rgb}{0.98,0.98,0.98}
+
+\newenvironment{code}
+    {\captionsetup{
+        type=listing,
+        skip=2pt,
+        belowskip=15pt
+        }}
+    {}
+
+\setminted{
+    linenos=true, 
+    frame=lines,
+    breaklines=true,
+    bgcolor=color_background,
+    }
+\usemintedstyle{one-dark}
+\setmintedinline{breaklines}
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Project: Non-lexical sounds in dialogue utterances} % Assignment title
+
+\date{November 30th, 2022} % Due date
+
+\author{Dominik Künkele}
+
+\institute{University of Gothenburg} % Institute or school name
+
+\class{Machine Learning 2 (LT2326)} % Course or class name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Output the assignment title, created automatically using the information in the custom commands above
+
+%----------------------------------------------------------------------------------------
+%	ASSIGNMENT CONTENT
+%----------------------------------------------------------------------------------------
+
+\section*{Background}
+In one of their papers, Edlund and his colleagues describe human interaction with machines using metaphors on a spectrum. On the one side of the spectrum is the so called \emph{interface metaphor}. The interface of the machine is built in a way that users are aware, they are talking to a machine. Consequently, they also adapt their language, and use more command like utterances (e.g. "Call John", "Set the timer") as they would fill slots in an imaginary web form. On the other end of the spectrum resides the \emph{human methapor}. Here, the users don't really know, they are talking to a machine and therfore use a "normal" language in the sense of utterances, they would uses in a human-human dialogue. While the interface metaphor is still used very commonly, many dialogue systems like \emph{Alexa} or \emph{Siri} lie somewhere in between these extremes. The human metaphor is implemented rarely and is seen more often in science fiction. 
+
+Nevertheless, there are a few strong reasons for using the human metaphor and let the users talk in natural language. Natural language is 
+\begin{description}
+    \item[easy to use.] Since we use natural language all the time in all human interactions, it is very natural for us, to also use it in machine interaction. 
+    \item[flexible.] Natural language allows us to express everything we want to express. We can express for instance thoughts, feelings or facts with different certainities or also for example talk about things that were, things that are, and some things that have not yet come to pass. There are only very few things in a human mind that cannot be represented in natural language (partly in combination with mimic and gestures).  
+    \item[resilient to error handling/] 
+\end{description}
+
+\section*{Data resource}
+
+\section*{Methods}
+
+\section*{Results}
+
+\section*{Discussion}
+
+\end{document}

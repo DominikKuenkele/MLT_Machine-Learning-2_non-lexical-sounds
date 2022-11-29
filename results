@@ -1,0 +1,119 @@
+---------------------------------------------
+only NLS dataset; cat lstm, transformer, pos:
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      1.0
+predicted: 0.4131981355793605
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 263690
+Ratio: 0.0651
+
+Average accuracy: 0.9032487206955283
+Average precision: 0.47565108467687245
+Average recall: 0.5003121434923753
+Average f1: 0.4843154937288227
+Average weighted accuracy: 0.06413779336755314
+NLS score: 0.4836932570315407
+Average meteor score: 0.9355088925133589
+
+---------------------------------------------
+complete dataset; cat lstm, transformer, pos:
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      0.36797761261396805
+predicted: 0.018806607889748143
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 635201
+Ratio: 0.027
+
+Average accuracy: 0.9679296319635511
+Average precision: 0.7919225879114503
+Average recall: 0.8064610418859126
+Average f1: 0.7985958882395152
+Average weighted accuracy: 0.026210928520674755
+NLS score: 0.4970702802421129
+Average meteor score: 0.9716714442285465
+
+---------------------------------------------
+complete dataset; cat lstm, pos:
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      0.36797761261396805
+predicted: 0.04979989769205308
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 635201
+Ratio: 0.027
+
+Average accuracy: 0.9667124311225005
+Average precision: 0.7852664463347674
+Average recall: 0.7988410595025965
+Average f1: 0.7913756986895302
+Average weighted accuracy: 0.026290953835160624
+NLS score: 0.4965016924788306
+Average meteor score: 0.9719924276147892
+
+---------------------------------------------
+complete dataset; add lstm, pos (1):
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      0.36797761261396805
+predicted: 0.04447386633767641
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 635201
+Ratio: 0.027
+
+Average accuracy: 0.9669784322661478
+Average precision: 0.7859153645099032
+Average recall: 0.7996827735513106
+Average f1: 0.7921522943989331
+Average weighted accuracy: 0.026260931374786713
+NLS score: 0.49661968182046723
+Average meteor score: 0.9718996003153033
+
+---------------------------------------------
+complete dataset; add lstm, pos (0.5):
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      0.36797761261396805
+predicted: 0.04630939126771583
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 635201
+Ratio: 0.027
+
+Average accuracy: 0.9668587062441377
+Average precision: 0.7856489280274684
+Average recall: 0.7993114868443215
+Average f1: 0.7918227526645665
+Average weighted accuracy: 0.02626377637637782
+NLS score: 0.49656124131025775
+Average meteor score: 0.9718722959334454
+
+---------------------------------------------
+complete dataset; lstm:
+---------------------------------------------
+Proportion of utterances, containing NLS:
+gold:      0.36797761261396805
+predicted: 0.0485962747871092
+
+Proportion of NLS to <NO-NLS> in test set:
+NLS: 17167
+<NO-NLS>: 635201
+Ratio: 0.027
+
+Average accuracy: 0.9665976223602545
+Average precision: 0.7846176930902309
+Average recall: 0.7981514587260463
+Average f1: 0.7907261100505186
+Average weighted accuracy: 0.02625035422924703
+NLS score: 0.49642398829475076
+Average meteor score: 0.9719289290194459

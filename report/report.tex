@@ -127,12 +127,25 @@ I cleansed the corpus, by removing annotations, \emph{silences} and laughters, r
 
 Almost half of the utterances contain a repetition. Most of the repetitions are only on word, but I could identify also repetitions of up to 9-grams.
 
-
-
-
-
 \section*{Methods}
-The idea of this project was to predict for each word in a sentence if and which NLS should follow. For the sentence \emph{uh-huh i think so and uh}, the representation for the model would look like this:
+The idea of this project was to predict if and which NLS should follow each word in a sentence. The model consists of (A) an embedding layer for tokens and POS, (B) encoder layers for tokens and POS and (B) a classifier that classifies the NLS for the output of the encoding.
+
+In the beginning, the embeddings for tokens and POS were trained from scratch. Later, I switched to pretrained \emph{GloVe} embeddings for the tokens that are based on 6 billion tokens with 300 dimensions. During training, they are frozen until epoch 10, from when they are fine-tuned.
+
+In the project, I wanted to compare different encoding layers and their combination and see, how they affect the predictions. For this, I use (1) a bidirectional LSTM encoder for the tokens, (2) a bidirectional LSTM encoder for the POS and (3) a transformer encoder. The encoders are combined in the following ways:
+\begin{enumerate}
+    \item $concat(token\_LSTM, POS\_LSTM, transformer)$
+    \item $concat(token\_LSTM, POS\_LSTM)$
+    \item $token\_LSTM + POS\_LSTM$
+    \item $token\_LSTM + 0.5 * POS\_LSTM$
+    \item $token\_LSTM$
+\end{enumerate} 
+
+The classifier finally combines multiple linear layers combines with non-linear functions, to reduce from the output dimension of the encoder to 14 classes (NLS tokens + <NO\_NLS> token).
+
+Dropout with a probability of 0.2 is applied to all of the layers during training.
+
+For the sentence \emph{uh-huh i think so and uh}, the representation for the model would look like this:
 
 \begin{table}[h]
     \centering
@@ -143,9 +156,38 @@ The idea of this project was to predict for each word in a sentence if and which
     \end{tabular}
 \end{table}
 
-For this, I tokenized the sentences, using \emph{nltk}s \emph{word\_tokenize} function, added start-of-sequence and end-of-sequence tokens and aligned it with the NLS. The input was then encoded with  
+For this, I first tokenized the sentences, using \emph{nltk}s \emph{word\_tokenize} function. Afterwards, I extracted the NLS, added start-of-sequence and end-of-sequence tokens and aligned it with the NLS. The input was then encoded in two ways. For the first, I built up my own vocabulary from the train dataset used it for the encoding. These encodings would be used to train word embeddings from scratch. For the second, I encoded the sentence in the vocabulary of \emph{glove}. I used the pretrained glove vectors based on 6 billion tokens using 300 dimensions. I added the special tokens \emph{<SOS>}, \emph{<END>}, \emph{<PAD>} and \emph{<UNK>} with random intializations to its vocabulary.
+Furthermore, I tagged the parts of speech for each sentence. These were encoded in its own vocabulary. POS embeddings are learned from scratch.
 
 \section*{Results}
+Evaluating the models was quite difficult. Since, it is not a standard classification task, but generation of sequences, classic metrics like \emph{accuracy}, \emph{precision} or \emph{recall} may not yield meaningful value. The whole problem could be more seen as a translation task from 'English without NLS' to 'English with NLS'. That's why, I also inlcuded the \emph{Meteor score}, which is usually used in Machine Translation. Still, compared to Machine Translation, the difference between the source and the target sentence is very small, in most of the cases just one token. The Meteor score will therefore be very high and differences between models may not be seen. Furthermore, the placement of NLS (as well as the type of NLS) in a sentence may seem correct for human judgement for multiple positions. This effect is even stronger than in Machine Translation, since NLS carry fewer semantic meaning than actual misplaces words. Consider the following two sentences:
+\begin{center}
+    (1) that's contrary to \textbf{uh} popular belief you know
+\end{center}
+\begin{center}
+    (2) that's contrary \textbf{uh} to popular belief you know
+\end{center}
+Sentence 1 is picked from the training data. If the model predicted Sentence 2, all of the metrics would punish the model even though for humans, both sentences sound acceptable. In the end, for this problem, all of the metrics can only give pointers and hints, which model might perform better than others. A human evaluation would be necessary to judge the models performance 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c || c c | c | c c c c c c c}
+        & \multicolumn{2}{c|}{contain NLS} & & & & & & & & \\
+           & gold  & predicted & $\frac{NLS}{<NO\_NLS>}$ & Accuracy       & Precision      & Recall  & Meteor        & NLS score      \\
+        \hline
+        (1) & 100   & 41.31     & 6.51                    & 90.32          & 47.57          & 50.03      & 93.55         & 48.37          \\
+        (1) & 36.80 & 4.63      & 2.70                     & \textbf{96.79} & \textbf{79.19} & \textbf{80.64} & 97.16         & \textbf{49.70} \\
+        (2) & 36.80 & 4.45      & 2.70                     & 96.70          & 78.59          & 79.97      & 97.18         & 49.66          \\
+        (3) & 36.80 & \textbf{4.98}      & 2.70                     & 96.67          & 78.52          & 79.88      & \textbf{97.20} & 49.65          \\
+        (4) & 36.80             & 4.63      & 2.70         & 96.69          & 78.56          & 79.93      & 97.19         & 49.66          \\
+        (5) & 36.80             & 4.86      & 2.70         & 96.66          & 78.46          & 79.82      & 97.19         & 49.64
+    \end{tabular}
+    \caption{Evaluation of each model}
+\end{table}
+
+I tested the models on two different datasets. In one dataset, I kept all of the utterances, independently if they contained NLS. The test split consists of around 36.8\% utterances that contain at least one NLS. Using this data, the models consistently generated very few utterances with NLS (only 4.4\% to 5\%). For this reason, I created another dataset, that filtered out all utterances without NLS. With this, the best model also generated for around 41\% of the test samples an utterances with NLS. The metrics are not directly comparable, because the test sets differ. 
+
+For the unfiltered dataset, all of the models produce very high metrics. The accuracy, as well as the Meteor score don't differ significantly across the models. Also the margin for the precision and recall lie under 0.6\% and 0.8\% respectiveley, which doesn't seem very significant. 
 
 My model has very high scores for all the metrics \emph{Accuracy}, \emph{Precision} and \emph{Recall}, even though the predicted sentences are not really good. The reason for that is only a very small proportion of the slots are NLS, while the biggest proportion is the <NO\_NLS> token. Therefore, my model that often only predicts <NO\_NLS> tokens for all of the slots performs very well. To make this problem better visible, I introduced a new metric, called the \emph{NLS score}. It is a weighted accuracy that weights <NO\_NLS> tokens antiproportinally to its occurence in the test corpus. More specifically the weights are calculated as following for the whole test corpus:
 
@@ -154,16 +196,16 @@ My model has very high scores for all the metrics \emph{Accuracy}, \emph{Precisi
     W_{NO\_NLS} &= 1 - W_{NLS}
 \end{align}
 
-The weights are then applied to each token of a sentence, depending the gold label. If the gold label was a <NO\_NLS> token, $W_{NO\_NLS}$ is applied, otherwise $W_{NLS}$. The sum of the weighted scores is then normalized over the length of the sentence and averaged over all sentences. 
+The weights are then applied to each token $t$ of a sentence, depending the gold label. If the gold label was a <NO\_NLS> token, $W_{NO\_NLS}$ is applied, otherwise $W_{NLS}$. The sum of the weighted scores is then normalized over the length of the sentence $n$ and averaged over all sentences. 
 \begin{align}
-    A_{WS} &= \frac{W_{NLS} * \sum_{0}^{t}{correct\ NLS} + W_{NO\_NLS} *\sum_{0}^{t}{correct\ NO\_NLS}}{t} \\
-    A_W &= \frac{\sum_{0}^{n}A_{WS}}{n}
+    A_{W\ sentence} &= \frac{W_{NLS} * \sum_{}^{t}{correct\ NLS} + W_{NO\_NLS} *\sum_{}^{t}{correct\ NO\_NLS}}{t} \\
+    A_W &= \frac{\sum_{}^{n}A_{WS}}{n}
 \end{align}
 
 Finally, the NLS score is the mean of the resulting weighted accuracy with the average 'normal' accuracy.
 
 \begin{equation}
-    NLS\ score = \frac{\sum_{0}^{n}{A_W} + \sum_{0}^{n}{A}}{2n}
+    NLS\ score = \frac{A_W + A}{2}
 \end{equation}
 
 This new metric takes the inbalance of <NO\_NLS> and NLS tokens better into account. It is also flexible in respect to a changing ratio, since it could also handle the opposite case if the biggest portion of slots were NLS tokens.
